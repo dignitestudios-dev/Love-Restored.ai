@@ -21,7 +21,7 @@ const Verification = () => {
   };
 
   const handleVerify = () => {
-    // Navigate to reset password page on verify
+    // Navigate to reset password page 
     navigate("/auth/reset-password");
   };
 
@@ -62,7 +62,7 @@ const Verification = () => {
             className="w-[70px] h-[70px] text-white text-[24px] font-semibold text-center border-2 border-white/50 rounded-full bg-transparent placeholder:text-white focus:outline-none focus:ring-2 focus:ring-[#0893F0]"
             placeholder="_"
           />
-        ))}
+        ))} 
       </div>
 
       {/* Resend link */}
