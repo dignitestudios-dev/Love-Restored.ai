@@ -1,10 +1,11 @@
 // src/components/ProtectedRoute.tsx
-import React from "react";
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router";
-import Cookies from "js-cookie";
+
+import { AppContext } from "../context/AppContext";
 
 const ProtectedRoutes = () => {
-  const token = Cookies.get("token");
+  const { token } = useContext(AppContext);
 
   if (!token) {
     return <Navigate to="/auth/login" replace />;

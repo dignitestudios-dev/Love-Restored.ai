@@ -20,8 +20,35 @@ background: linear-gradient(90deg,rgba(179, 124, 38, 1) 0%, rgba(218, 180, 98, 1
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(41, 39, 52, 1) 150%);
 }
 
+/* Dark theme for react-datepicker */
+.dark-datepicker {
+  background-color: #1f2937 !important; /* gray-800 */
+  color: #e5e7eb !important; /* gray-200 */
+  border-radius: 0.5rem;
+  border: 1px solid #374151 !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
 
+.dark-datepicker .react-datepicker__header {
+  background-color: #111827 !important; /* gray-900 */
+  border-bottom: 1px solid #374151 !important;
+}
 
+.dark-datepicker .react-datepicker__day,
+.dark-datepicker .react-datepicker__day-name {
+  color: #d1d5db !important; /* gray-300 */
+}
+
+.dark-datepicker .react-datepicker__day--selected,
+.dark-datepicker .react-datepicker__day--keyboard-selected {
+  background-color: #2563eb !important; /* blue-600 */
+  color: #fff !important;
+  border-radius: 50%;
+}
+
+.dark-datepicker .react-datepicker__day:hover {
+  background-color: #374151 !important; /* gray-700 */
+}
 
 
 /* Custom Scrollbar Styles */

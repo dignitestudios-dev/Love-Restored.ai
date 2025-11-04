@@ -1,14 +1,42 @@
-import React, { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { onMessageListener } from "../firebase/messages";
-import getFCMToken from "../firebase/getFcmToken";
+import { createContext, useContext, useState } from "react";
+
 import Cookies from "js-cookie";
-import axios from "../axios";
+import { useNavigate } from "react-router";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
+  const navigate = useNavigate();
+  const [token, setToken] = useState(() => Cookies.get("token"));
+
+  const [userData, setUserData] = useState(() => {
+    const cookieData = Cookies.get("user");
+    return cookieData ? JSON.parse(cookieData) : null;
+  });
+
+  const loginAuth = (data) => {
+    if (data) {
+      if (data?.data?.token) {
+        Cookies.set("token", data?.data?.token);
+        setToken(data?.data?.token);
+      }
+      if (data?.data?.user) {
+        setUserData(data?.data?.user);
+        Cookies.set("user", JSON.stringify(data?.data?.user));
+      }
+    }
+  };
+
+  const logoutAuth = async () => {
+    Cookies.remove("token");
+    Cookies.remove("user");
+    localStorage.clear();
+    sessionStorage.clear();
+    setToken(null);
+    setUserData(null);
+    navigate("/auth/login");
+  };
+
   // Send fcm to backend:
   // const fetchToken = async () => {
   //   const token = await getFCMToken();
@@ -46,12 +74,12 @@ export const AppContextProvider = ({ children }) => {
   //   })
   //   .catch((err) => console.log("failed: ", err));
 
-  const dummyVar = null;
-
   return (
     <AppContext.Provider
       value={{
-        dummyVar,
+        loginAuth,
+        logoutAuth,
+        token,
       }}
     >
       {children}

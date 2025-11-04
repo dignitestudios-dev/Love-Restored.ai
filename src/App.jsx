@@ -10,7 +10,6 @@ import Notifications from "./pages/app/Notifications";
 import UserDetails from "./pages/app/UserDetails";
 
 // Auth Pages
-import DummyLogin from "./pages/authentication/DummyLogin";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import ResetPassword from "./pages/authentication/ResetPassword";
 import Verification from "./pages/authentication/Verification";
@@ -19,6 +18,9 @@ import Verification from "./pages/authentication/Verification";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import Posts from "./pages/app/Posts";
 import Reports from "./pages/app/Reports";
+import Login from "./pages/authentication/Login";
+import ReportDetails from "./pages/app/ReportDetails";
+import PostDetails from "./pages/app/PostDetails";
 
 function App() {
   return (
@@ -27,13 +29,12 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route path="app" element={<DashboardLayout />}>
           {/* <Route path="dashboard" element={<DummyHome />} /> */}
-          
         </Route>
       </Route>
 
       {/* 🔓 Public Auth Routes */}
       <Route path="auth" element={<AuthLayout />}>
-        <Route path="login" element={<DummyLogin />} />
+        <Route path="login" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="reset-password" element={<ResetPassword />} />
         <Route path="verification" element={<Verification />} />
@@ -44,12 +45,11 @@ function App() {
         <Route path="dashboard" element={<DummyHome />} />
         <Route path="users" element={<Users />} />
         <Route path="notifications" element={<Notifications />} />
-        <Route path="user-details" element={<UserDetails />} />
+        <Route path="user-details/:id" element={<UserDetails />} />
         <Route path="posts" element={<Posts />} />
+        <Route path="post-details/:id" element={<PostDetails />} />
         <Route path="reports" element={<Reports />} />
-
-
-
+        <Route path="report-details/:id" element={<ReportDetails />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/auth/login" />} />
@@ -57,7 +57,9 @@ function App() {
       {/* 404 Fallback */}
       <Route
         path="*"
-        element={<div className="text-7xl text-center mt-10">Page Not Found</div>}
+        element={
+          <div className="text-7xl text-center mt-10">Page Not Found</div>
+        }
       />
     </Routes>
   );

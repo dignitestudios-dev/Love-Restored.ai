@@ -3,12 +3,12 @@ import { ErrorToast } from "./components/global/Toaster"; // Import your toaster
 import Cookies from "js-cookie";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 
-export const baseUrl = "http://18.222.22.108/api/v1";
+export const baseUrl = "https://staging.api.loverestoredai.com";
 // export const baseUrl = "https://155e-45-199-187-86.ngrok-free.app";
 
 async function getDeviceFingerprint() {
   const fp = FingerprintJS.load();
-  const result =  fp.get();
+  const result = fp.get();
   console.log(result.visitorId); // Unique device ID
   return result.visitorId;
 }

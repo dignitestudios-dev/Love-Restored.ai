@@ -1,31 +1,72 @@
-// import { useState, useEffect } from "react";
-// import axios from "../../axios";
-// import { ErrorToast } from "../../components/global/Toaster";
-// import { processError } from "../../lib/utils";
+import { useState, useEffect } from "react";
+import axios from "../../axios";
+import { processError } from "../../lib/utils";
 
-// const useUsers = (url, currentPage = 1) => {
-//   const [loading, setLoading] = useState(false);
-//   const [data, setData] = useState([]);
-//   const [pagination, setPagination] = useState({});
+const useFetchData = (
+  url,
+  limit,
+  filter = {},
+  currentPage = 1,
+  update = false
+) => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({});
 
-//   const getUsers = async () => {
-//     try {
-//       setLoading(true);
-//       const { data } = await axios.get(`${url}?page=${currentPage}`);
-//       setData(data?.data);
-//       setPagination(data?.pagination);
-//     } catch (error) {
-//       processError(error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const queryParams = new URLSearchParams();
 
-//   useEffect(() => {
-//     getUsers();
-//   }, [currentPage]);
+      // Add filter params if available
+      Object.entries(filter).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "") {
+          queryParams.append(key, value);
+        }
+      });
+      const { data } = await axios.get(
+        `${url}?${queryParams?.toString()}&page=${currentPage}&limit=${limit}`
+      );
+      setData(data?.data);
+      setPagination(data?.pagination);
+    } catch (error) {
+      processError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   return { loading, data, pagination };
-// };
+  useEffect(() => {
+    getData();
+  }, [JSON.stringify(filter), currentPage, update]);
 
-// export { useUsers };
+  return { loading, data, pagination };
+};
+
+const useFetchById = (url, update = false) => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({});
+
+  const getDataById = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get(`${url}`);
+      setData(data?.data);
+      setPagination(data?.pagination);
+    } catch (error) {
+      processError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getDataById();
+  }, [update]);
+
+  return { loading, data, pagination };
+};
+
+export { useFetchData, useFetchById };

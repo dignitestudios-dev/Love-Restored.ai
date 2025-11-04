@@ -1,84 +1,66 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { FaBackward, FaFastBackward, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { ErrorToast } from "../../components/global/Toaster"; // Import your toaster function
-import axios from "../../axios"; // Import axios instance
+
+import { ErrorToast } from "../../components/global/Toaster";
+import axios from "../../axios";
 import { Logo } from "../../assets/export";
 import { IoIosArrowBack } from "react-icons/io";
-import { FiLoader } from "react-icons/fi"; // Assuming you want to use the loader icon
+import { FiLoader } from "react-icons/fi";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleEmailChange = (e) => setEmail(e.target.value);
-  const handleNewPasswordChange = (e) => setNewPassword(e.target.value);
-  const handleConfirmPasswordChange = (e) => setConfirmPassword(e.target.value);
-
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleResetPassword = async () => {
-            navigate("/auth/verification");
+    navigate("/auth/verification");
 
-    // setEmailError("");
+    setEmailError("");
 
-    // if (!email) {
-    //   ErrorToast("Please enter your email.");
-    //   return;
-    // }
+    if (!email) {
+      ErrorToast("Please enter your email.");
+      return;
+    }
 
-    // if (!newPassword || newPassword.length < 8) {
-    //   ErrorToast("Password must be at least 8 characters long.");
-    //   return;
-    // }
+    setLoading(true);
 
-    // if (newPassword !== confirmPassword) {
-    //   ErrorToast("Passwords do not match.");
-    //   return;
-    // }
-
-    // setLoading(true);
-
-    // try {
-    //   const response = await axios.post("/auth/reset-password", { email, newPassword });
-    //   if (response.data.success) {
-    //     navigate("/auth/login");
-    //   } else {
-    //     ErrorToast(response.data.message || "Failed to reset password.");
-    //   }
-    // } catch (error) {
-    //   console.error("Reset Password Error:", error);
-    //   ErrorToast("An error occurred. Please try again.");
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const response = await axios.post("/admin/auth/send-reset-otp", {
+        email,
+      });
+      if (response.data.success) {
+        navigate("/auth/verification", { state: { email } });
+      }
+    } catch (error) {
+      ErrorToast(error?.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div
-      className="w-full h-full background-gradient border border-gray-700 flex flex-col items-center p-6 backdrop-blur-lg md:w-[630px] md:h-[636px] rounded-[19px] bg-cover bg-center"
-    >
+    <div className="w-full h-full background-gradient border border-gray-700 flex flex-col items-center p-6 backdrop-blur-lg md:w-[630px] md:h-[636px] rounded-[19px] bg-cover bg-center">
       <div className="w-auto flex flex-col mt-64 justify-center items-center">
-         <img
-                src={Logo}
-                alt="orange_logo"
-                className="w-full h-full object-cover opacity-80 absolute top-0 left-0 z-[-1]"
-              />
-         <div className="w-full flex flex-col mt-16 justify-center items-center">
-           <button
-             type="button"
-             onClick={() => navigate("/auth/login")}
-             className="absolute top-6 left-6 text-white text-[16px] font-normal z-10"
-           >
-             <IoIosArrowBack className="inline mr-2 text-3xl button-bg rounded-md p-1 border border-gray-700" />
-           </button>
-           <h2 className="text-[32px] leading-[48px] text-white font-extrabold mt-2 mb-2">Forgot Password</h2>
-         </div>
+        <img
+          src={Logo}
+          alt="orange_logo"
+          className="w-full h-full object-cover opacity-80 absolute top-0 left-0 z-[-1]"
+        />
+        <div className="w-full flex flex-col mt-16 justify-center items-center">
+          <button
+            type="button"
+            onClick={() => navigate("/auth/login")}
+            className="absolute top-6 left-6 text-white text-[16px] font-normal z-10"
+          >
+            <IoIosArrowBack className="inline mr-2 text-3xl button-bg rounded-md p-1 border border-gray-700" />
+          </button>
+          <h2 className="text-[32px] leading-[48px] text-white font-extrabold mt-2 mb-2">
+            Forgot Password
+          </h2>
+        </div>
       </div>
 
       <form className="w-full md:w-[393px] flex flex-col justify-start items-start gap-4">
@@ -92,7 +74,9 @@ const ForgotPassword = () => {
             value={email}
             onChange={handleEmailChange}
           />
-          {emailError && <p className="text-red-500 text-sm mt-1">{emailError}</p>}
+          {emailError && (
+            <p className="text-red-500 text-sm mt-1">{emailError}</p>
+          )}
         </div>
 
         {/* <div className="w-full h-auto flex flex-col justify-start items-start gap-1">

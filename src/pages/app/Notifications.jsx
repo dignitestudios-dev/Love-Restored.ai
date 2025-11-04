@@ -1,27 +1,50 @@
 import { Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import NotificationsModal from "../../components/NotificationsModal";
+import { useFetchData } from "../../hooks/api/Get";
+import NotificationsSkeleton from "./../../components/Loaders/NotificationsSkeleton";
+import Pagination from "./Pagination";
+import { getDateFormat } from "../../lib/helpers";
+import ConfirmationModal from "../../components/global/ConfirmationModal";
+import axios from "../../axios";
+import { ErrorToast } from "../../components/global/Toaster";
 
 const Notifications = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [notificationId, setNotificationId] = useState("");
+  const [statusLoading, setStatusLoading] = useState("idle");
+  const [update, setUpdate] = useState(false);
 
-  const notifications = [
-    {
-      id: 1,
-      title: "Notification 1",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do tempor...",
-      date: "22 Sep, 2025",
-      time: "08:00 PM",
-    },
-    {
-      id: 2,
-      title: "Notification 2",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do tempor...",
-      date: "23 Sep, 2025",
-      time: "10:00 AM",
-    },
-    // Add more notifications as needed
-  ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const {
+    data: notificationsData,
+    loading,
+    pagination,
+  } = useFetchData(`/admin/notifications/`, 10, {}, page, update);
+
+  const handleDeleteNotification = async () => {
+    try {
+      setStatusLoading("loading");
+      const response = await axios.delete(
+        `/admin/notifications/${notificationId}`
+      );
+      if (response.status === 200) {
+        setUpdate((prev) => !prev);
+      }
+    } catch (error) {
+      console.error("Status update failed", error);
+      ErrorToast(error.response.data.message);
+    } finally {
+      setStatusLoading("idle");
+      setShowDeleteModal(false);
+    }
+  };
 
   return (
     <div className="p-6 min-h-screen pt-2 text-white">
@@ -35,7 +58,7 @@ const Notifications = () => {
         </h1>
 
         <div className="flex text-white rounded-lg shadow p-1 button-bg">
-          <button 
+          <button
             onClick={() => setIsModalOpen(true)}
             className="px-6 py-1 rounded-lg font-medium flex items-center gap-2"
           >
@@ -45,22 +68,31 @@ const Notifications = () => {
         </div>
       </div>
 
-      {/* Notifications Cards */}
+      {loading ? (
+        <NotificationsSkeleton />
+      ) : (
         <section className="mt-6 background-gradients border border-gray-700 p-6 rounded-xl space-y-6">
-          {notifications.map((notification, index) => (
+          {notificationsData?.notifications?.map((notification, index) => (
             <div
-              key={notification.id}
+              key={index}
               className="background-gradient border border-gray-700 p-6 rounded-xl hover:bg-opacity-80 transition cursor-pointer"
             >
               <div className="flex justify-between items-center">
-                <div className="text-xl font-semibold text-gray-200">{notification.title}</div>
-                <div className="text-sm text-gray-400">{notification.date}</div>
+                <div className="text-xl font-semibold text-gray-200">
+                  {notification.title}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {getDateFormat(notification.createdAt)}
+                </div>
               </div>
               <p className="mt-2 text-gray-300">{notification.description}</p>
               <div className="flex justify-end">
                 <button
                   className="text-red-500 hover:text-red-400 transition"
-                  onClick={() => alert(`Delete Notification ${notification.id}`)} // handle delete here
+                  onClick={() => {
+                    setShowDeleteModal(true);
+                    setNotificationId(notification._id);
+                  }} // handle delete here
                 >
                   <Trash2 />
                 </button>
@@ -68,12 +100,35 @@ const Notifications = () => {
             </div>
           ))}
         </section>
+      )}
+
+      <Pagination
+        currentPage={pagination?.currentPage}
+        totalPages={pagination?.totalPages}
+        onPageChange={handlePageChange}
+        setCurrentPage={page}
+      />
 
       {/* Modal */}
-      <NotificationsModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
+      {isModalOpen && (
+        <NotificationsModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          setUpdate={setUpdate}
+        />
+      )}
+
+      {showDeleteModal && (
+        <ConfirmationModal
+          title={"Delete this notification?"}
+          content={"This notification will be deleted permanently."}
+          skipBtnContent="Cancel"
+          confirmBtnContent="Delete"
+          onClose={() => setShowDeleteModal(false)}
+          onSubmit={handleDeleteNotification}
+          loading={statusLoading}
+        />
+      )}
     </div>
   );
 };

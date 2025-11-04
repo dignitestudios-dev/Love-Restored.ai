@@ -1,15 +1,40 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "../axios";
+import { ErrorToast } from "./global/Toaster";
 
-const NotificationsModal = ({ isOpen, onClose }) => {
+// eslint-disable-next-line react/prop-types
+const NotificationsModal = ({ isOpen, onClose, setUpdate }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleCreate = () => {
-    // Handle create logic here
-    console.log({ title, description });
-    onClose();
+  const handleCreate = async () => {
+    if (!title.trim() || !description.trim()) {
+      setError("Both title and description are required.");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      await axios.post("/admin/notifications/", {
+        title,
+        description,
+      });
+      onClose();
+      setTitle("");
+      setDescription("");
+    } catch (err) {
+      ErrorToast(err.response.data.message);
+      setError("Failed to send notification. Please try again.");
+    } finally {
+      setUpdate((prev) => !prev);
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,6 +57,10 @@ const NotificationsModal = ({ isOpen, onClose }) => {
           }}
           className="space-y-5"
         >
+          {error && (
+            <div className="text-red-500 text-sm font-medium">{error}</div>
+          )}
+
           <div>
             <label className="block text-sm mb-1 text-gray-300">Title</label>
             <input
@@ -40,19 +69,19 @@ const NotificationsModal = ({ isOpen, onClose }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 text-white placeholder-gray-400"
-              required
             />
           </div>
 
           <div>
-            <label className="block text-sm mb-1 text-gray-300">Description</label>
+            <label className="block text-sm mb-1 text-gray-300">
+              Description
+            </label>
             <textarea
               placeholder="Enter description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 bg-transparent border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-700 text-white placeholder-gray-400"
               rows="4"
-              required
             />
           </div>
 
@@ -66,9 +95,12 @@ const NotificationsModal = ({ isOpen, onClose }) => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 rounded-lg button-bg text-white font-semibold hover:bg-[#b8860b] transition"
+              disabled={loading}
+              className={`px-6 py-2 rounded-lg button-bg text-white font-semibold transition ${
+                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-[#b8860b]"
+              }`}
             >
-              Create
+              {loading ? "Sending..." : "Create"}
             </button>
           </div>
         </form>

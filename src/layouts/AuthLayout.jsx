@@ -1,8 +1,12 @@
-import React from "react";
-import { Outlet } from "react-router";
-import { loginbg } from "../assets/export";
+import { useContext } from "react";
+import { Navigate, Outlet } from "react-router";
+import { AppContext } from "../context/AppContext";
 
 const AuthLayout = () => {
+  const { token } = useContext(AppContext);
+  if (token) {
+    return <Navigate to="/app/dashboard" replace />;
+  }
   return (
     <div
       className="relative w-screen min-h-screen flex justify-center items-center p-3 md:py-8 background-gradient"

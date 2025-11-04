@@ -1,46 +1,35 @@
-import { NavLink, useNavigate } from "react-router";
-import { useState } from "react";
+import { NavLink } from "react-router";
+import { useContext, useState } from "react";
 import { sidebarData } from "../../static/Sidebar";
 import { LogOut } from "lucide-react";
-import { Logo, navlogo, sidebar } from "../../assets/export";
+import { navlogo } from "../../assets/export";
+import { AppContext } from "../../context/AppContext";
 
 const DummySidebar = () => {
-  const navigate = useNavigate();
+  const { logoutAuth } = useContext(AppContext);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = () => {
-    // ✅ Clear all cookies
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-
-    // ✅ Clear localStorage and sessionStorage
-    localStorage.clear();
-    sessionStorage.clear();
-
-    // ✅ Navigate to login page (or home)
-    navigate("/auth/login");
+    logoutAuth();
   };
 
   return (
-<div
+    <div
       className="w-72 h-full border-r overflow-y-auto pl-4 px-8 py-6 flex flex-col gap-4 border border-gray-700 background-gradient"
       // style={{
       //   backgroundImage: `url(${sidebar})`, // Apply the background image from assets
       //   backgroundSize: "cover", // Ensure the image covers the entire sidebar
       //   backgroundPosition: "center", // Center the background image
       // }}
-    >   
-    <img
+    >
+      <img
         src={navlogo}
         loading="lazy"
         alt="logo-organization"
         className="h-25 w-25 cursor-pointer mb-6 justify-center items-center mx-auto"
       />
       {/* <h1 className="text-white p-8 pl-4">LOVERESTORED.AI</h1> */}
-       {sidebarData?.map((sidebar) => (
+      {sidebarData?.map((sidebar) => (
         <NavLink
           key={sidebar?.link}
           className={({ isActive }) =>
