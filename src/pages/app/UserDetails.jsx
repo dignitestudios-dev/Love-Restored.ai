@@ -151,7 +151,7 @@ const UserDetails = () => {
               className="px-8 py-3 rounded-xl border border-gray-600 hover:border-[#DAB462] transition text-white flex items-center space-x-3"
             >
               <span>
-                {data?.user?.isDeactivatedByAdmin ? "Disabled" : "Enabled"}
+                {data?.user?.isDeactivatedByAdmin ? "Activate User" : "Deactivate User"}
               </span>
             </button>
 
@@ -169,8 +169,8 @@ const UserDetails = () => {
         <ConfirmationModal
           title={
             data?.user?.isDeactivatedByAdmin
-              ? "Enable this user?"
-              : "Disable this user?"
+              ? "Activate this user?"
+              : "Deactivate this user?"
           }
           content={
             data?.user?.isDeactivatedByAdmin
@@ -179,7 +179,7 @@ const UserDetails = () => {
           }
           skipBtnContent="Cancel"
           confirmBtnContent={
-            data?.user?.isDeactivatedByAdmin ? "Enable" : "Disable"
+            data?.user?.isDeactivatedByAdmin ? "Activate" : "Deactivate"
           }
           onClose={() => setShowStatusModal(false)}
           onSubmit={handleStatusSubmit}

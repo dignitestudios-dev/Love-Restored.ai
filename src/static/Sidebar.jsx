@@ -7,6 +7,8 @@ import { Bell } from 'lucide-react';
 import { MessageSquareWarning } from 'lucide-react';
 import { Calendar } from 'lucide-react';
 import { House } from 'lucide-react';
+import { DollarSign } from 'lucide-react';
+
 
 export const sidebarData = [
   {
@@ -33,5 +35,10 @@ export const sidebarData = [
     title: "Push Notifications",
     icon: <Bell />,  // Bell is perfect for notifications
     link: "/app/notifications",
+  },
+  {
+    title: "Transactions",
+    icon: <DollarSign />,  // Bell is perfect for notifications
+    link: "/app/transactions",
   },
 ];

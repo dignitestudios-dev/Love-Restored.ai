@@ -8,6 +8,7 @@ import DummyHome from "./pages/app/DummyHome";
 import Users from "./pages/app/Users";
 import Notifications from "./pages/app/Notifications";
 import UserDetails from "./pages/app/UserDetails";
+import Transactions from "./pages/app/Transactions";
 
 // Auth Pages
 import ForgotPassword from "./pages/authentication/ForgotPassword";
@@ -21,6 +22,7 @@ import Reports from "./pages/app/Reports";
 import Login from "./pages/authentication/Login";
 import ReportDetails from "./pages/app/ReportDetails";
 import PostDetails from "./pages/app/PostDetails";
+
 
 function App() {
   return (
@@ -50,6 +52,8 @@ function App() {
         <Route path="post-details/:id" element={<PostDetails />} />
         <Route path="reports" element={<Reports />} />
         <Route path="report-details/:id" element={<ReportDetails />} />
+                <Route path="transactions" element={<Transactions />} />
+
       </Route>
 
       <Route path="/" element={<Navigate to="/auth/login" />} />
