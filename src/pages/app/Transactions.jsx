@@ -75,13 +75,13 @@ const Transactions = () => {
 
         {/* Title + Icon */}
         <div className="flex items-center justify-between">
-          <h1 className="text-[32px] md:text-[36px] font-bold">Transactions Overview</h1>
+          <h1 className="text-[32px] md:text-[36px] font-bold">Revenue Overview</h1>
         </div>
       </div>
 
       {/* ---------- 📅 Filters and Tabs ---------- */}
-      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-        <div className="flex bg-gray-800 rounded-lg w-auto p-1">
+      <div className="flex justify-end items-center mb-6 flex-wrap gap-4">
+        {/* <div className="flex bg-gray-800 rounded-lg w-auto p-1">
           <button
             onClick={() => setActiveTab("bookings")}
             className={`px-6 py-2 rounded-lg font-medium ${
@@ -102,7 +102,7 @@ const Transactions = () => {
           >
             Subscriptions
           </button>
-        </div>
+        </div> */}
 
         <div className="flex flex-wrap gap-6 items-end">
           <DatePickerField
@@ -193,9 +193,9 @@ const Transactions = () => {
         </div>
       )}
 
-      {activeTab === "subscriptions" && (
-        <RecentSubscriptionTable startDate={startDate} endDate={endDate} />
-      )}
+      {/* {activeTab === "subscriptions" && (
+        <Rece ntSubscriptionTable startDate={startDate} endDate={endDate} />
+      )} */}
     </div>
   );
 };
