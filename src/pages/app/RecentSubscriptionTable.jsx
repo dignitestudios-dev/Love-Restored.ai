@@ -83,8 +83,17 @@ const RecentSubscriptionTable = () => {
   };
 
   return (
-    <div className="min-h-screen pt-2">
-      {/* <div className="flex flex-wrap gap-6 items-center justify-end mb-6">
+    <div className="min-h-screen pt-2 p-6">
+       <div className="background-gradients relative p-6 rounded-xl text-white shadow-md border border-gray-700 overflow-hidden mt-4 mb-4">
+        {/* Accent Bar */}
+        <div className="absolute top-0 left-0 w-full h-1 button-bg rounded-t-3xl" />
+
+        {/* Title + Icon */}
+        <div className="flex items-center justify-between">
+          <h1 className="text-[32px] md:text-[36px] font-bold">Revenue Overview</h1>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-6 items-center justify-end mb-6">
         <DatePickerField
           label="Start Date"
           value={startDate}
@@ -96,7 +105,7 @@ const RecentSubscriptionTable = () => {
           onChange={setEndDate}
           minDate={startDate}
         />
-      </div> */}
+      </div>
 
       <div className="mb-4 background-gradients border border-gray-700 p-6 rounded-xl mt-2">
         <div className="w-full rounded-xl overflow-x-auto space-y-4">

@@ -22,6 +22,7 @@ import Reports from "./pages/app/Reports";
 import Login from "./pages/authentication/Login";
 import ReportDetails from "./pages/app/ReportDetails";
 import PostDetails from "./pages/app/PostDetails";
+import RecentSubscriptionTable from "./pages/app/RecentSubscriptionTable";
 
 
 function App() {
@@ -52,7 +53,7 @@ function App() {
         <Route path="post-details/:id" element={<PostDetails />} />
         <Route path="reports" element={<Reports />} />
         <Route path="report-details/:id" element={<ReportDetails />} />
-                <Route path="transactions" element={<Transactions />} />
+                <Route path="revenue" element={<RecentSubscriptionTable />} />
 
       </Route>
 

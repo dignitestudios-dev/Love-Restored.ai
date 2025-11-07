@@ -39,6 +39,6 @@ export const sidebarData = [
   {
     title: "Revenue Overview",
     icon: <DollarSign />,  // Bell is perfect for notifications
-    link: "/app/transactions",
+    link: "/app/revenue",
   },
 ];
