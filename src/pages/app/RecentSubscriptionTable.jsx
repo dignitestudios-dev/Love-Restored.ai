@@ -130,8 +130,8 @@ const RecentSubscriptionTable = () => {
                     {sub.transactionNumber || sub._id.slice(-8).toUpperCase()}
                   </div>
                   <div>{sub.user?.name || "N/A"}</div>
-                  <div>{"Subscription"}</div>
-                  <div>{"N/A"}</div>
+                  <div>{sub.planName}</div>
+                  <div>{sub.duration}</div>
                   <div>${(sub.amount || 0).toFixed(2)}</div>
                 </div>
               ))}
