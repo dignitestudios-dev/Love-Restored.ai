@@ -23,6 +23,8 @@ import Login from "./pages/authentication/Login";
 import ReportDetails from "./pages/app/ReportDetails";
 import PostDetails from "./pages/app/PostDetails";
 import RecentSubscriptionTable from "./pages/app/RecentSubscriptionTable";
+import SpinandSpark from "./pages/app/SpinandSpark";
+import SpinandsparkChallenges from "./pages/app/SpinandsparkChallenges";
 
 
 function App() {
@@ -54,7 +56,11 @@ function App() {
         <Route path="reports" element={<Reports />} />
         <Route path="report-details/:id" element={<ReportDetails />} />
                 <Route path="revenue" element={<RecentSubscriptionTable />} />
-
+                <Route path="spinandspark" element={<SpinandSpark />} />
+<Route
+    path="spinandspark/:category"
+    element={<SpinandsparkChallenges />}
+  />
       </Route>
 
       <Route path="/" element={<Navigate to="/auth/login" />} />

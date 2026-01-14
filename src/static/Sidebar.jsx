@@ -1,4 +1,4 @@
-import { Blocks } from 'lucide-react';
+import { Blocks, LoaderPinwheel } from 'lucide-react';
 import { User } from 'lucide-react';
 import { Car } from 'lucide-react';
 import { UserPlus } from 'lucide-react';
@@ -40,5 +40,10 @@ export const sidebarData = [
     title: "Revenue Overview",
     icon: <DollarSign />,  // Bell is perfect for notifications
     link: "/app/revenue",
+  },
+   {
+    title: "Spin and Spark",
+    icon: <LoaderPinwheel  />,  // Bell is perfect for notifications
+    link: "/app/spinandspark",
   },
 ];
